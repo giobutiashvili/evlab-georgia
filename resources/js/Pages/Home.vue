@@ -1,9 +1,12 @@
-<script setup>
-const props = defineProps(["bgClass", "buttonText"]);
-</script>
-
 <template>
-    <main :class="['container py-4', props.bgClass]">
-        <button class="btn btn-primary">{{ props.buttonText }}</button>
-    </main>
+    <main>rame rume</main>
 </template>
+
+<script setup></script>
+<style scoped>
+main {
+    padding: 2rem;
+    text-align: center;
+    font-size: 1.5rem;
+}
+</style>

@@ -4,7 +4,11 @@ import router from './router';
 
 // Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
-// Bootstrap JS bundle (includes Popper)
+// Flag Icons
+import 'flag-icons/css/flag-icons.min.css';
+// Bootstrap JS
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+// Bootstrap Icon
+
 
 createApp(App).use(router).mount('#app');

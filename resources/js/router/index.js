@@ -8,8 +8,8 @@ import Contact from '../Pages/Contact.vue';
 
 // define routes
 const routes = [
-  { path: '/', component: Home, props: { bgClass: 'bg-warning', buttonText: 'Buy now' } },
-  { path: '/products', component: Products},
+  { path: '/', component: Home },
+  { path: '/products', component: Products },
   { path: '/about', component: AboutUs },
   { path: '/contact', component: Contact },
 ];

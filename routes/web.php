@@ -15,5 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/{any}', function () {
-    return view('app'); // app.blade.php სადაც Vue ტვირთავს
+    return view('app');
 })->where('any', '.*');
