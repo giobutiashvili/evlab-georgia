@@ -114,10 +114,10 @@
 /* --- Active Route: Neon Border + Stronger Glow --- */
 .nav-item .nav-link.router-link-active,
 .nav-item .nav-link.router-link-exact-active {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(6, 214, 160, 0.7);
     color: #ffffff;
-    border: 2px solid rgba(255, 255, 255, 0.6);
-    box-shadow: 0 0 16px rgba(255, 255, 255, 0.35);
+    border: 2px solid rgba(6, 214, 160, 0.7);
+    box-shadow: 0 0 26px rgba(6, 214, 160, 0.7);
     transform: translateY(-2px);
 }
 
@@ -131,5 +131,25 @@
 .language-switcher span:hover {
     transform: scale(1.2);
     filter: brightness(1.2);
+}
+#img_comp-jvuhvl932 {
+    animation: logoGlow 2.5s infinite alternate;
+    transition: all 0.3s ease;
+}
+
+@keyframes logoGlow {
+    0% {
+        filter: drop-shadow(0 0 0 rgba(6, 214, 160, 0));
+        transform: scale(1);
+    }
+    50% {
+        filter: drop-shadow(0 0 10px rgba(6, 214, 160, 0.7))
+            drop-shadow(0 0 20px rgba(6, 214, 160, 0.4));
+        transform: scale(1.03);
+    }
+    100% {
+        filter: drop-shadow(0 0 0 rgba(6, 214, 160, 0));
+        transform: scale(1);
+    }
 }
 </style>

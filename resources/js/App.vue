@@ -16,6 +16,9 @@ import Footer from "./Components/Footer.vue";
 </script>
 
 <style>
+main {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
 .contact-icon {
     font-size: 22px;
     color: #ffffff; /* ან შენი ფერი */
