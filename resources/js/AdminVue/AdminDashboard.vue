@@ -27,6 +27,7 @@
             />
             <button type="submit" class="btn btn-gradient w-100">Login</button>
         </form>
+        <p v-if="errorMessage" class="error-message mt-3">{{ errorMessage }}</p>
     </div>
 </template>
 
@@ -34,13 +35,15 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
-const router = useRouter();
 
+const router = useRouter();
 const username = ref("");
 const password = ref("");
 const email = ref("");
+const errorMessage = ref("");
 
 const login = async () => {
+    errorMessage.value = "";
     try {
         const resp = await axios.post("http://127.0.0.1:8000/api/admin/login", {
             username: username.value,
@@ -50,7 +53,15 @@ const login = async () => {
         localStorage.setItem("adminToken", resp.data.token);
         router.push({ name: "AdminProductsAdd" });
     } catch (error) {
-        console.error("Login failed:", error);
+        if (
+            error.response &&
+            error.response.data &&
+            error.response.data.message
+        ) {
+            errorMessage.value = error.response.data.message;
+        } else {
+            errorMessage.value = "Login failed. Please try again.";
+        }
     }
 };
 </script>
@@ -80,5 +91,34 @@ const login = async () => {
     opacity: 0.9;
     transform: translateY(-2px);
     box-shadow: 0 6px 14px rgba(102, 126, 234, 0.5);
+}
+.error-message {
+    color: #ff6b6b;
+    font-weight: 500;
+    animation: fadeInShake 0.7s ease;
+}
+
+/* ანიმაცია: ნელ-ნელა ჩნდება და მსუბუქად აქანავებს */
+@keyframes fadeInShake {
+    0% {
+        opacity: 0;
+        transform: translateX(0);
+    }
+    20% {
+        opacity: 1;
+        transform: translateX(-5px);
+    }
+    40% {
+        transform: translateX(5px);
+    }
+    60% {
+        transform: translateX(-5px);
+    }
+    80% {
+        transform: translateX(5px);
+    }
+    100% {
+        transform: translateX(0);
+    }
 }
 </style>
