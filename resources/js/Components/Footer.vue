@@ -1,23 +1,21 @@
 <template>
-    <footer class="site-footer bg-dark text-white pt-5 pb-4">
+    <footer class="site-footer text-white pt-5 pb-4">
         <div class="container">
             <div class="row">
-                <div class="col-md-4 mb-4">
+                <!-- LOGO -->
+                <div class="col-md-4 mb-4 text-center text-md-start">
                     <img
                         :src="evlabLogo"
                         alt="EvLab"
                         class="footer-logo mb-3"
                     />
-                    <p class="text-muted small">
-                        Leading the electric revolution with innovative charging
-                        solutions.
-                    </p>
                 </div>
 
+                <!-- LINKS -->
                 <div class="col-md-4 mb-4">
                     <div class="row">
                         <div class="col-6">
-                            <h6 class="text-uppercase fw-bold">Products</h6>
+                            <h6 class="footer-title">Products</h6>
                             <ul class="list-unstyled footer-list">
                                 <li>
                                     <a href="#" class="footer-link"
@@ -36,8 +34,9 @@
                                 </li>
                             </ul>
                         </div>
+
                         <div class="col-6">
-                            <h6 class="text-uppercase fw-bold">Support</h6>
+                            <h6 class="footer-title">Support</h6>
                             <ul class="list-unstyled footer-list">
                                 <li>
                                     <a href="#" class="footer-link"
@@ -57,23 +56,18 @@
                     </div>
                 </div>
 
+                <!-- CONTACT INFO -->
                 <div class="col-md-4 mb-4">
-                    <h6 class="text-uppercase fw-bold">Contact</h6>
-                    <p class="d-flex align-items-center mb-2">
-                        +995 599 75 09 86
-                    </p>
-                    <p class="d-flex align-items-center mb-2">
-                        gioushu@mail.ru
-                    </p>
-                    <p class="d-flex align-items-center mb-3">
-                        Tbilisi, Georgia
-                    </p>
+                    <h6 class="footer-title">Contact</h6>
+                    <p class="footer-contact">+995 599 75 09 86</p>
+                    <p class="footer-contact">gioushu@mail.ru</p>
+                    <p class="footer-contact">Tbilisi, Georgia</p>
                 </div>
             </div>
 
-            <hr class="border-secondary" />
+            <hr class="footer-divider" />
 
-            <div class="text-center small">
+            <div class="text-center small footer-bottom">
                 © 2025 EvLab — All rights reserved.
             </div>
         </div>
@@ -85,27 +79,78 @@ import evlabLogo from "../../images/ac.avif";
 </script>
 
 <style scoped>
+/* MAIN BACKGROUND */
 .site-footer {
-    background: linear-gradient(180deg, #24252a, #1f2937);
+    background: linear-gradient(180deg, #1f1f27, #0f1115);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 -4px 20px rgba(6, 214, 160, 0.2);
 }
+
+/* TITLES */
+.footer-title {
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #06d6a0;
+    margin-bottom: 12px;
+}
+
+/* LOGO EFFECT */
 .footer-logo {
     max-width: 140px;
-    height: auto;
-    display: block;
+    transition: 0.3s ease;
+    animation: footerLogoGlow 3s infinite alternate;
 }
-.footer-list {
-    margin-top: 0.5rem;
+@keyframes footerLogoGlow {
+    0% {
+        filter: drop-shadow(0 0 0 rgba(6, 214, 160, 0));
+        transform: scale(1);
+    }
+    100% {
+        filter: drop-shadow(0 0 12px rgba(6, 214, 160, 0.8))
+            drop-shadow(0 0 20px rgba(6, 214, 160, 0.4));
+        transform: scale(1.04);
+    }
 }
+
+/* LINKS */
 .footer-link {
     color: #9ca3af;
     text-decoration: none;
-}
-.footer-link:hover {
-    color: #9ca3af;
-    text-decoration: underline;
+    transition: 0.25s ease;
+    display: inline-block;
+    padding: 2px 0;
 }
 
-@media (max-width: 767.98px) {
+/* NEON HOVER */
+.footer-link:hover {
+    color: #06d6a0;
+    transform: translateX(4px);
+    text-shadow: 0 0 6px rgba(6, 214, 160, 0.7);
+}
+
+/* CONTACT TEXT EFFECTS */
+.footer-contact {
+    color: #c7c7c7;
+    transition: 0.3s ease;
+}
+.footer-contact:hover {
+    color: #06d6a0;
+    transform: translateX(4px);
+    text-shadow: 0 0 8px rgba(6, 214, 160, 0.6);
+}
+
+/* DIVIDER */
+.footer-divider {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* BOTTOM TEXT */
+.footer-bottom {
+    color: #9ca3af;
+}
+
+/* RESPONSIVE LOGO */
+@media (max-width: 767px) {
     .footer-logo {
         max-width: 120px;
         margin: 0 auto;

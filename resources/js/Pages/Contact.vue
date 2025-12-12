@@ -56,7 +56,7 @@
                     <p><i class="fas fa-phone"></i> +995 599 75 09 86</p>
                     <p><i class="fas fa-envelope"></i> evlabge@gmail.com</p>
                     <div>
-                        <img src="" alt="" />
+                        <img style="width: 100%" :src="contactimg" alt="" />
                     </div>
                 </div>
             </div>
@@ -76,6 +76,7 @@
     </section>
 </template>
 <script setup>
+import contactimg from "../../images/Schn.png";
 let location = "EV-Lab Georgia, Tbilisi, Georgia";
 const openmap = () => {
     const query = encodeURIComponent(location);
@@ -86,10 +87,11 @@ const openmap = () => {
 
 <style scoped>
 .contact-page {
-    background-image: url("../../images/images\ \(1\).jpg"); /* გზა შენი სურათის */
+    background-image: url("../../images/images2.webp"); /* გზა შენი სურათის */
     background-size: cover;
     background-position: center; /* შუაში გამოდის */
     background-repeat: no-repeat;
+    object-fit: cover;
 }
 
 /* Container */
@@ -106,6 +108,7 @@ const openmap = () => {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    margin-top: 20px;
 }
 
 /* Form & Info columns */

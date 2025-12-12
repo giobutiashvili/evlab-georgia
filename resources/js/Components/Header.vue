@@ -114,7 +114,7 @@
 /* --- Active Route: Neon Border + Stronger Glow --- */
 .nav-item .nav-link.router-link-active,
 .nav-item .nav-link.router-link-exact-active {
-    background: rgba(6, 214, 160, 0.7);
+    background: rgba(255, 255, 255, 0.25);
     color: #ffffff;
     border: 2px solid rgba(6, 214, 160, 0.7);
     box-shadow: 0 0 26px rgba(6, 214, 160, 0.7);
