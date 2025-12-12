@@ -12,7 +12,9 @@
                     homes, businesses, and public locations. Fast, reliable and
                     future-ready.
                 </p>
-                <button class="cta-btn">Browse Catalog</button>
+                <router-link to="/products"
+                    ><button class="cta-btn">Browse Catalog</button>
+                </router-link>
             </div>
         </div>
     </section>

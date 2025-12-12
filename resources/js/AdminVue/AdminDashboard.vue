@@ -1,0 +1,84 @@
+<template>
+    <div
+        class="admin-dashboard d-flex justify-content-center align-items-center mt-4 pt-4 bg-gradient"
+    >
+        <form
+            class="admin-login-form-container p-4 rounded shadow text-center"
+            @submit.prevent="login"
+        >
+            <h2 class="admin-login-title mb-4">Admin Login</h2>
+            <input
+                v-model="username"
+                type="text"
+                placeholder="Username"
+                class="form-control mb-3"
+            />
+            <input
+                v-model="email"
+                type="email"
+                placeholder="Email"
+                class="form-control mb-3"
+            />
+            <input
+                v-model="password"
+                type="password"
+                placeholder="Password"
+                class="form-control mb-3"
+            />
+            <button type="submit" class="btn btn-gradient w-100">Login</button>
+        </form>
+    </div>
+</template>
+
+<script setup>
+import { ref } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
+const router = useRouter();
+
+const username = ref("");
+const password = ref("");
+const email = ref("");
+
+const login = async () => {
+    try {
+        const resp = await axios.post("http://127.0.0.1:8000/api/admin/login", {
+            username: username.value,
+            email: email.value,
+            password: password.value,
+        });
+        localStorage.setItem("adminToken", resp.data.token);
+        router.push({ name: "AdminProductsAdd" });
+    } catch (error) {
+        console.error("Login failed:", error);
+    }
+};
+</script>
+
+<style scoped>
+.admin-login-form-container {
+    width: 320px;
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+.admin-login-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+}
+
+/* Gradient button */
+.btn-gradient {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(102, 126, 234, 0.5);
+}
+</style>

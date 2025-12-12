@@ -4,7 +4,7 @@
         class="navbar navbarheader navbar-expand-lg navbar-light bg-light shadow-sm"
     >
         <div class="container d-flex align-items-center">
-            <a class="navbar-brand d-flex align-items-center" href="#">
+            <a class="navbar-brand d-flex align-items-center" href="/">
                 <img
                     fetchpriority="high"
                     sizes="162px"
@@ -116,7 +116,7 @@
 .nav-item .nav-link.router-link-exact-active {
     background: rgba(255, 255, 255, 0.25);
     color: #ffffff;
-    border: 2px solid rgba(6, 214, 160, 0.7);
+
     box-shadow: 0 0 26px rgba(6, 214, 160, 0.7);
     transform: translateY(-2px);
 }
