@@ -192,6 +192,7 @@ textarea {
     cursor: pointer;
     color: #06d6a0;
     transition: color 0.3s, text-shadow 0.3s;
+    text-shadow: 0 0 5px rgba(6, 214, 160, 0.7);
 }
 .map-link:hover {
     color: #1b9aaa;

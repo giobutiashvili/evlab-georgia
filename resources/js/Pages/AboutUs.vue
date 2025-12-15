@@ -46,7 +46,7 @@ import aboutimg from "../../images/evlabimage.png"; // background image
     content: "";
     position: absolute;
     inset: 0;
-    backdrop-filter: blur(4px); /* BLUR FULL BACKGROUND */
+    backdrop-filter: blur(px); /* BLUR FULL BACKGROUND */
     background: rgba(0, 0, 0, 0.25); /* dark overlay */
 }
 

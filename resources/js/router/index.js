@@ -33,9 +33,13 @@ router.beforeEach((to, from, next) => {
   
   if (to.meta.requiresAdmin && !token) {
     next({ name: 'AdminDashboard' });
-  } else {
-    next();
+  } 
+  
+   if (to.path === '/admin' && token) {
+    return next('AdminProductsAdd'); // dashboard / products
   }
+    next();
+  
 });
 
 

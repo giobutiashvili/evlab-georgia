@@ -14,12 +14,14 @@ class IsAdmin
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next)
     {
         if (!Auth::check() || !Auth::user()->is_admin) {
-
-            return response()->json(['massage' => 'Forbidden'], 403);
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 403);
         }
+
         return $next($request);
     }
 }
