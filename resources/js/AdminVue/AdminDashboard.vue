@@ -1,8 +1,8 @@
 <template>
-    <div class="container mt-4">
+    <div class="container mt-4 mb-5">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3>Products</h3>
-            <router-link to="/admin/products/create" class="btn btn-primary">
+            <router-link to="/admin/product/create" class="btn btn-primary">
                 ➕ Add Product
             </router-link>
         </div>
@@ -45,7 +45,10 @@
 
                     <td class="text-center">
                         <router-link
-                            :to="`/admin/products/${product.id}/edit`"
+                            :to="{
+                                name: 'AdminProductEdit',
+                                params: { id: product.id },
+                            }"
                             class="btn btn-sm btn-warning me-2"
                         >
                             Edit
@@ -78,7 +81,8 @@ const fetchProducts = async () => {
             Authorization: `Bearer ${token}`,
         },
     });
-    console.log(res.data);
+    products.value = res.data;
+    console.log(products.value);
 };
 
 const deleteProduct = async (id) => {

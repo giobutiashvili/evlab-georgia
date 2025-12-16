@@ -85,24 +85,25 @@ const handleImage = (e) => {
 };
 
 const fetchProduct = async () => {
-    const token = localStorage.getItem("adminToken");
+    try {
+        const token = localStorage.getItem("adminToken");
+        const res = await axios.get(
+            `http://127.0.0.1:8000/api/admin/products/${productId}`,
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        );
+        form.value = res.data;
 
-    const res = await axios.get(
-        `http://127.0.0.1:8000/api/admin/products/${productId}`,
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+        // Full image URL
+        if (res.data.image) {
+            form.value.image = `http://127.0.0.1:8000/storage/${res.data.image}`;
         }
-    );
 
-    console.log(res.data);
-    form.value = {
-        name: res.data.name,
-        price: res.data.price,
-        description: res.data.description,
-        main_image: res.data.main_image,
-    };
+        console.log("Fetched product:", form.value);
+    } catch (err) {
+        console.error(err.response?.data || err);
+    }
 };
 
 const updateProduct = async () => {
@@ -117,20 +118,22 @@ const updateProduct = async () => {
         formData.append("image", newImage.value);
     }
 
-    formData.append("_method", "PUT");
+    try {
+        await axios.put(
+            `http://127.0.0.1:8000/api/admin/products/${productId}`,
+            formData,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
 
-    await axios.post(
-        `http://127.0.0.1:8000/api/admin/products/${productId}`,
-        formData,
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "multipart/form-data",
-            },
-        }
-    );
-
-    router.push({ name: "AdminDashboard" });
+        router.push({ name: "AdminDashboard" });
+    } catch (err) {
+        console.error("Error updating product:", err.response?.data || err);
+    }
 };
 
 onMounted(fetchProduct);

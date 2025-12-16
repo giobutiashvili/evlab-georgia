@@ -1,9 +1,9 @@
 <template>
     <div
-        class="admin-products-add d-flex justify-content-center align-items-center mt-4 pt-4 bg-gradient"
+        class="admin-products-add d-flex justify-content-center align-items-center pt-4 bg-gradient"
     >
         <form
-            class="admin-products-add-form-container p-4 rounded shadow text-center"
+            class="admin-products-add-form-container mt-4 pt-4 mb-4 rounded shadow text-center"
             @submit.prevent="products()"
         >
             <h2 class="admin-products-add-title mb-4">Add New Product</h2>
@@ -19,7 +19,6 @@
                     multiple
                     @change="productImage"
                     required
-                    ref="imgeInput"
                 />
             </div>
             <div class="mb-3 text-start">
@@ -59,7 +58,7 @@
                     required
                 ></textarea>
             </div>
-            <button type="submit" class="btn btn-gradient w-100">
+            <button type="submit" class="btn btn-success w-50 mb-3">
                 Add Product
             </button>
         </form>
@@ -70,24 +69,23 @@
 import { ref } from "vue";
 import axios from "axios";
 
-const images = ref([]);
-const imgeInput = ref(null);
+const image = ref(null);
+
 const name = ref("");
 const price = ref("");
 const description = ref("");
 
 const productImage = (event) => {
-    image.value = Array.from(event.target.files);
+    image.value = event.target.files[0]; // მხოლოდ 1 სურათი
 };
 
 const products = async () => {
     const formData = new FormData();
-    images.value.forEach((file, index) => {
-        formData.append(`images[${index}]`, file); // ყველა სურათი ცალ-ცალკე
-    });
+    formData.append("image", image.value);
     formData.append("name", name.value);
     formData.append("price", price.value);
     formData.append("description", description.value);
+
     try {
         const token = localStorage.getItem("adminToken");
         const response = await axios.post(
@@ -100,8 +98,8 @@ const products = async () => {
                 },
             }
         );
-
-        images.value = [];
+        console.log(response.data);
+        image.value = null;
         name.value = "";
         price.value = "";
         description.value = "";
