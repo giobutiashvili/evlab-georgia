@@ -6,7 +6,9 @@ import Products from '../Pages/Products.vue'
 import AboutUs from '../Pages/AboutUs.vue';
 import Contact from '../Pages/Contact.vue';
 import AdminDashboard from '../AdminVue/AdminDashboard.vue';
-import AdminproductsAdd from '@/AdminVue/AdminproductsAdd.vue';
+import AdminProductAdd from '@/AdminVue/AdminProductAdd.vue';
+import AdminProductEdit from '@/AdminVue/AdminProductEdit.vue';
+import AdminLogin from '@/AdminVue/AdminLogin.vue';
 
 // define routes
 const routes = [
@@ -14,9 +16,15 @@ const routes = [
   { path: '/products', component: Products },
   { path: '/about', component: AboutUs },
   { path: '/contact', component: Contact },
-  { path: '/admin', name: 'AdminDashboard', component: AdminDashboard },
-  { path: '/admin/products', name: 'AdminProductsAdd', component: AdminproductsAdd,
-  meta: { requiresAdmin: true } }
+  { path: '/admin', redirect:'/admin/login'},
+  { path: '/admin/login', name:'AdminLogin',  component: AdminLogin},
+  { path: '/admin/dashboard', name: 'AdminDashboard', component: AdminDashboard,
+    meta: { requiresAdmin: true }
+   },
+  { path: '/admin/product/create', name: 'AdminProductAdd', component: AdminProductAdd,
+    meta: { requiresAdmin: true } },
+  { path: '/admin/product/:id/edit', name: 'AdminProductEdit', component: AdminProductEdit,
+    meta: { requiresAdmin: true } }
 
   
 ];
@@ -32,11 +40,11 @@ router.beforeEach((to, from, next) => {
   
   
   if (to.meta.requiresAdmin && !token) {
-    next({ name: 'AdminDashboard' });
+    next({ name: 'AdminLogin' });
   } 
   
-   if (to.path === '/admin' && token) {
-    return next('AdminProductsAdd'); // dashboard / products
+   if (to.path === 'AdminLogin' && token) {
+    return next('AdminDashboard'); 
   }
     next();
   

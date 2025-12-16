@@ -16,6 +16,7 @@
                     id="productImage"
                     class="form-control mb-3"
                     accept="image/*"
+                    multiple
                     @change="productImage"
                     required
                     ref="imgeInput"
@@ -69,19 +70,21 @@
 import { ref } from "vue";
 import axios from "axios";
 
-const image = ref(null);
+const images = ref([]);
 const imgeInput = ref(null);
 const name = ref("");
 const price = ref("");
 const description = ref("");
 
 const productImage = (event) => {
-    image.value = event.target.files[0];
+    image.value = Array.from(event.target.files);
 };
 
 const products = async () => {
     const formData = new FormData();
-    formData.append("image", image.value);
+    images.value.forEach((file, index) => {
+        formData.append(`images[${index}]`, file); // ყველა სურათი ცალ-ცალკე
+    });
     formData.append("name", name.value);
     formData.append("price", price.value);
     formData.append("description", description.value);
@@ -98,7 +101,7 @@ const products = async () => {
             }
         );
 
-        image.value = null;
+        images.value = [];
         name.value = "";
         price.value = "";
         description.value = "";

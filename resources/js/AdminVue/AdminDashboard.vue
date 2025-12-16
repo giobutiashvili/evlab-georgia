@@ -1,124 +1,100 @@
 <template>
-    <div
-        class="admin-dashboard d-flex justify-content-center align-items-center mt-4 pt-4 bg-gradient"
-    >
-        <form
-            class="admin-login-form-container p-4 rounded shadow text-center"
-            @submit.prevent="login"
-        >
-            <h2 class="admin-login-title mb-4">Admin Login</h2>
-            <input
-                v-model="username"
-                type="text"
-                placeholder="Username"
-                class="form-control mb-3"
-            />
-            <input
-                v-model="email"
-                type="email"
-                placeholder="Email"
-                class="form-control mb-3"
-            />
-            <input
-                v-model="password"
-                type="password"
-                placeholder="Password"
-                class="form-control mb-3"
-            />
-            <button type="submit" class="btn btn-gradient w-100">Login</button>
-        </form>
-        <p v-if="errorMessage" class="error-message mt-3">{{ errorMessage }}</p>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3>Products</h3>
+            <router-link to="/admin/products/create" class="btn btn-primary">
+                ➕ Add Product
+            </router-link>
+        </div>
+
+        <table class="table table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr v-if="products.length === 0">
+                    <td colspan="5" class="text-center">No products found</td>
+                </tr>
+
+                <tr v-for="(product, index) in products" :key="product.id">
+                    <td>{{ index + 1 }}</td>
+
+                    <td>
+                        <img
+                            :src="
+                                product.image
+                                    ? `/storage/${product.image}`
+                                    : '/placeholder.png'
+                            "
+                            alt="product"
+                            width="60"
+                            height="60"
+                            class="rounded object-fit-cover"
+                        />
+                    </td>
+
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.price }} ₾</td>
+
+                    <td class="text-center">
+                        <router-link
+                            :to="`/admin/products/${product.id}/edit`"
+                            class="btn btn-sm btn-warning me-2"
+                        >
+                            Edit
+                        </router-link>
+
+                        <button
+                            class="btn btn-sm btn-danger"
+                            @click="deleteProduct(product.id)"
+                        >
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
-import { useRouter } from "vue-router";
 
-const router = useRouter();
-const username = ref("");
-const password = ref("");
-const email = ref("");
-const errorMessage = ref("");
+const products = ref([]);
 
-const login = async () => {
-    errorMessage.value = "";
-    try {
-        const resp = await axios.post("http://127.0.0.1:8000/api/admin/login", {
-            username: username.value,
-            email: email.value,
-            password: password.value,
-        });
-        localStorage.setItem("adminToken", resp.data.token);
-        router.push({ name: "AdminProductsAdd" });
-    } catch (error) {
-        if (
-            error.response &&
-            error.response.data &&
-            error.response.data.message
-        ) {
-            errorMessage.value = error.response.data.message;
-        } else {
-            errorMessage.value = "Login failed. Please try again.";
-        }
-    }
+const fetchProducts = async () => {
+    const token = localStorage.getItem("adminToken");
+
+    const res = await axios.get("http://127.0.0.1:8000/api/admin/products", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    console.log(res.data);
 };
+
+const deleteProduct = async (id) => {
+    if (!confirm("Are you sure you want to delete this product?")) return;
+
+    const token = localStorage.getItem("adminToken");
+
+    await axios.delete(`http://127.0.0.1:8000/api/admin/products/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    // refresh list
+    products.value = products.value.filter((p) => p.id !== id);
+};
+
+onMounted(fetchProducts);
 </script>
-
-<style scoped>
-.admin-login-form-container {
-    width: 320px;
-    background-color: rgba(255, 255, 255, 0.95);
-}
-
-.admin-login-title {
-    font-size: 24px;
-    font-weight: 700;
-    color: #333;
-}
-
-/* Gradient button */
-.btn-gradient {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: #fff;
-    font-weight: 600;
-    border-radius: 0.5rem;
-    transition: all 0.3s ease;
-}
-
-.btn-gradient:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(102, 126, 234, 0.5);
-}
-.error-message {
-    color: #ff6b6b;
-    font-weight: 500;
-    animation: fadeInShake 0.7s ease;
-}
-
-/* ანიმაცია: ნელ-ნელა ჩნდება და მსუბუქად აქანავებს */
-@keyframes fadeInShake {
-    0% {
-        opacity: 0;
-        transform: translateX(0);
-    }
-    20% {
-        opacity: 1;
-        transform: translateX(-5px);
-    }
-    40% {
-        transform: translateX(5px);
-    }
-    60% {
-        transform: translateX(-5px);
-    }
-    80% {
-        transform: translateX(5px);
-    }
-    100% {
-        transform: translateX(0);
-    }
-}
-</style>
