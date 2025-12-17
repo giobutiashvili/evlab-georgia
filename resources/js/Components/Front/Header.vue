@@ -1,5 +1,4 @@
 <template>
-    <!-- Global Navbar -->
     <nav
         class="navbar navbarheader navbar-expand-lg navbar-light bg-light shadow-sm"
     >
@@ -37,27 +36,42 @@
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/">Home</router-link>
+                        <router-link
+                            class="nav-link"
+                            to="/"
+                            exact
+                            exact-active-class="active"
+                            >Home</router-link
+                        >
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/products"
+                        <router-link
+                            class="nav-link"
+                            to="/products"
+                            :class="{
+                                active: route.path.startsWith('/products'),
+                            }"
                             >Products</router-link
                         >
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/about"
+                        <router-link
+                            class="nav-link"
+                            to="/about"
+                            :class="{ active: route.path === '/about' }"
                             >About</router-link
                         >
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/contact"
+                        <router-link
+                            class="nav-link"
+                            to="/contact"
+                            :class="{ active: route.path === '/contact' }"
                             >Contact</router-link
                         >
                     </li>
                 </ul>
 
-                <!-- Language switcher: sits inside collapse so it moves into burger menu on small screens,
-                     but displays inline on large screens using flex utilities -->
                 <div
                     class="d-flex gap-3 align-items-center ms-lg-3 language-switcher"
                 >
@@ -77,7 +91,8 @@
 </template>
 
 <script setup>
-// No props or state needed for now; this is a presentational header
+import { useRoute } from "vue-router";
+const route = useRoute();
 </script>
 
 <style scoped>

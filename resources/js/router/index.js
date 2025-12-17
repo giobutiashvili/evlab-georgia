@@ -1,49 +1,65 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 // Pages 
+import FrontLayout from '@/Layouts/FrontLayout.vue'
 import Home from '../Pages/Home.vue';
 import Products from '../Pages/Products.vue'
+import ProductDetails from '@/Pages/ProductDetails.vue'
 import AboutUs from '../Pages/AboutUs.vue';
 import Contact from '../Pages/Contact.vue';
+
+// Admin 
+
+import AdminLayout from '@/Layouts/AdminLayout.vue';
 import AdminDashboard from '../AdminVue/AdminDashboard.vue';
 import AdminProductAdd from '@/AdminVue/AdminProductAdd.vue';
 import AdminProductEdit from '@/AdminVue/AdminProductEdit.vue';
 import AdminLogin from '@/AdminVue/AdminLogin.vue';
 
 
-//  routes
 const routes = [
-  { path: '/', component: Home },
-  { path: '/products', component: Products },
-  { path: '/about', component: AboutUs },
-  { path: '/contact', component: Contact },
-
-// admin
-  { path: '/admin', redirect:'/admin/login', },
-  { path: '/admin/login', name:'AdminLogin',  component: AdminLogin},
-  { path: '/admin/dashboard', name: 'AdminDashboard', component: AdminDashboard,
-    meta: { requiresAdmin: true }
-   },
-  { path: '/admin/product/create', name: 'AdminProductAdd', component: AdminProductAdd,
-    meta: { requiresAdmin: true } },
-  { path: '/admin/product/:id/edit', name: 'AdminProductEdit', component: AdminProductEdit,
-    meta: { requiresAdmin: true } },
   {
-    path: '/admin/:catchAll(.*)',
-    name: 'AdminNotFound',
-    beforeEnter: (to, from, next) => {
-      const token = localStorage.getItem('adminToken');
+    path: '/',
+    component: FrontLayout,
+    children: [
+    { path: '/', name: 'Home', component: Home },
+    { path: 'products', name: 'Products', component: Products },
+    { path: 'products/:id', name: 'ProductDetails', component: ProductDetails },
+    { path: 'about', name: 'AboutUs', component: AboutUs },
+    { path: 'contact', name: 'Contact', component: Contact },
+  ]
+  },
 
-      if (token) {
-        // თუ token არის → dashboard
-        next({ name: 'AdminDashboard' });
-      } else {
-        // თუ არა → login
-        next({ name: 'AdminLogin' });
+
+
+  // ADmin Routs 
+  {
+    path: '/admin',
+    component: AdminLayout,
+    meta: { requiresAdmin: true },
+    children: [
+      { path: 'dashboard', name: 'AdminDashboard', component: AdminDashboard },
+      { path: 'product/create', name: 'AdminProductAdd', component: AdminProductAdd },
+      { path: 'product/:id/edit', name: 'AdminProductEdit', component: AdminProductEdit },
+      {
+        path: ':catchAll(.*)',
+        beforeEnter: (to, from, next) => {
+          const token = localStorage.getItem('adminToken');
+          if (token) {
+            next({ name: 'AdminDashboard' });
+          } else {
+            next({ name: 'AdminLogin' });
+          }
+        }
       }
-    }
+    ]
+  },
+  {
+    path: '/admin/login',
+    name: 'AdminLogin',
+    component: AdminLogin
   }
-];
+  ]
 
 // create router
 const router = createRouter({

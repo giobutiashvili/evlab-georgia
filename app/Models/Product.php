@@ -13,6 +13,6 @@ class Product extends Model
         'name',
         'price',
         'description',
-        'image', // მხოლოდ ერთი სურათი
+        'image',
     ];
 }

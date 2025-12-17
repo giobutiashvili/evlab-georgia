@@ -41,7 +41,6 @@
                 <label class="form-label">Current Image</label><br />
                 <img :src="form.image" width="120" class="rounded mb-2" />
             </div>
-
             <!-- New Image -->
             <div class="mb-3">
                 <label class="form-label">Change Image (optional)</label>
@@ -52,7 +51,6 @@
                     @change="handleImage"
                 />
             </div>
-
             <button class="btn btn-success">Update Product</button>
             <router-link to="/admin/dashboard" class="btn btn-secondary ms-2">
                 Cancel
@@ -68,7 +66,6 @@ import axios from "axios";
 
 const route = useRoute();
 const router = useRouter();
-
 const productId = route.params.id;
 
 const form = ref({
@@ -79,7 +76,6 @@ const form = ref({
 });
 
 const newImage = ref(null);
-
 const handleImage = (e) => {
     newImage.value = e.target.files[0];
 };
@@ -94,7 +90,6 @@ const fetchProduct = async () => {
             }
         );
         form.value = res.data;
-
         // Full image URL
         if (res.data.image) {
             form.value.image = `http://127.0.0.1:8000/storage/${res.data.image}`;
@@ -107,19 +102,19 @@ const fetchProduct = async () => {
 };
 
 const updateProduct = async () => {
+    console.log("Updating product with data:", form.value);
     const token = localStorage.getItem("adminToken");
-
     const formData = new FormData();
-    formData.append("name", form.value.name);
-    formData.append("price", form.value.price);
-    formData.append("description", form.value.description);
+    formData.append("name", String(form.value.name));
+    formData.append("price", Number(form.value.price));
+    formData.append("description", String(form.value.description));
 
     if (newImage.value) {
         formData.append("image", newImage.value);
     }
 
     try {
-        await axios.put(
+        await axios.post(
             `http://127.0.0.1:8000/api/admin/products/${productId}`,
             formData,
             {

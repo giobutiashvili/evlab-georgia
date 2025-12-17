@@ -75,7 +75,7 @@
 </template>
 
 <script setup>
-import evlabLogo from "../../images/ac.avif";
+import evlabLogo from "@/../images/ac.avif";
 </script>
 
 <style scoped>
