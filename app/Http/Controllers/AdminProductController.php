@@ -14,7 +14,7 @@ class AdminProductController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'description' => 'nullable|string',
-            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:4096', // მხოლოდ ერთი სურათი
+            'image' => 'required|mimes:jpg,jpeg,png,webp,avif|max:4096', // მხოლოდ ერთი სურათი
         ]);
 
         try {

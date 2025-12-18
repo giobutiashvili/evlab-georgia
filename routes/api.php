@@ -31,3 +31,4 @@ Route::middleware(['auth:sanctum', 'is_admin'])->prefix('admin')->group(function
 });
 Route::post('/admin/login', [AdminController::class, 'login']);
 Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{id}', [ProductController::class, 'show']);

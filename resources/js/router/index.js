@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 // Pages 
-import FrontLayout from '@/Layouts/FrontLayout.vue'
+import FrontLayout from '@/Layouts/FrontLayout.vue';
 import Home from '../Pages/Home.vue';
 import Products from '../Pages/Products.vue'
 import ProductDetails from '@/Pages/ProductDetails.vue'
@@ -18,21 +18,25 @@ import AdminLogin from '@/AdminVue/AdminLogin.vue';
 
 
 const routes = [
-  {
+   { path: '/', redirect: '/home' },
+  { 
+    
     path: '/',
     component: FrontLayout,
     children: [
-    { path: '/', name: 'Home', component: Home },
-    { path: 'products', name: 'Products', component: Products },
-    { path: 'products/:id', name: 'ProductDetails', component: ProductDetails },
-    { path: 'about', name: 'AboutUs', component: AboutUs },
-    { path: 'contact', name: 'Contact', component: Contact },
-  ]
+      { path: 'home', name: 'Home', component: Home, meta: { title: 'Home Page' } },
+      { path: 'products', name: 'Products', component: Products, meta: { title: 'Our Products' } },
+      { path: 'products/:id', name: 'ProductDetails', component: ProductDetails, meta: { title: 'Product Details' } },
+      { path: 'about', name: 'AboutUs', component: AboutUs ,meta: { title: 'About Us' } },
+      { path: 'contact', name: 'Contact', component: Contact ,  meta: { title: 'Contact Us' }}
+
+    ]
+    
   },
 
-
-
   // ADmin Routs 
+
+
   {
     path: '/admin',
     component: AdminLayout,
@@ -67,7 +71,10 @@ const router = createRouter({
   routes,
 });
 
-
+router.beforeEach((to, from, next) => {
+  document.title = to.meta?.title || 'EvLab' // fallback title
+  next()
+})
 
 
 export default router;

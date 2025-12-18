@@ -1,14 +1,16 @@
 <template>
-    <Header />
+    <main class="d-flex flex-column">
+        <Header />
 
-    <main class="container my-4">
-        <router-view />
+        <section class="container my-4 d-flex flex-column flex-fill">
+            <router-view />
+        </section>
+
+        <Footer />
     </main>
-
-    <Footer />
 </template>
 
 <script setup>
-import Header from "@/components/front/Header.vue";
-import Footer from "@/components/front/Footer.vue";
+import Header from "@/Components/Front/Header.vue";
+import Footer from "@/Components/Front/Footer.vue";
 </script>

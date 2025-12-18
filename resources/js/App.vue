@@ -1,9 +1,9 @@
 <template>
-    <div class="d-flex flex-column min-vh-100">
-        <main class="flex-fill">
+    <main class="d-flex flex-column min-vh-100">
+        <section class="container d-flex flex-column flex-fill">
             <router-view />
-        </main>
-    </div>
+        </section>
+    </main>
 </template>
 
 <script setup></script>

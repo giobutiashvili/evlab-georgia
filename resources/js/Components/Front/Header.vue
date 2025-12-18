@@ -3,7 +3,7 @@
         class="navbar navbarheader navbar-expand-lg navbar-light bg-light shadow-sm"
     >
         <div class="container d-flex align-items-center">
-            <a class="navbar-brand d-flex align-items-center" href="/">
+            <a class="navbar-brand d-flex align-items-center" href="/home">
                 <img
                     fetchpriority="high"
                     sizes="162px"
@@ -36,37 +36,22 @@
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <router-link
-                            class="nav-link"
-                            to="/"
-                            exact
-                            exact-active-class="active"
+                        <router-link class="nav-link" to="/home"
                             >Home</router-link
                         >
                     </li>
                     <li class="nav-item">
-                        <router-link
-                            class="nav-link"
-                            to="/products"
-                            :class="{
-                                active: route.path.startsWith('/products'),
-                            }"
+                        <router-link class="nav-link" to="/products"
                             >Products</router-link
                         >
                     </li>
                     <li class="nav-item">
-                        <router-link
-                            class="nav-link"
-                            to="/about"
-                            :class="{ active: route.path === '/about' }"
+                        <router-link class="nav-link" to="/about"
                             >About</router-link
                         >
                     </li>
                     <li class="nav-item">
-                        <router-link
-                            class="nav-link"
-                            to="/contact"
-                            :class="{ active: route.path === '/contact' }"
+                        <router-link class="nav-link" to="/contact"
                             >Contact</router-link
                         >
                     </li>

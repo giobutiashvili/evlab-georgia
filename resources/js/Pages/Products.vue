@@ -3,38 +3,45 @@
         <div class="row g-4">
             <div class="col-md-4" v-for="product in products" :key="product.id">
                 <div class="card h-100 shadow-sm product-card">
-                    <img
-                        :src="
-                            product.image
-                                ? `/storage/${product.image}`
-                                : '/placeholder.png'
-                        "
-                        class="card-img-top"
-                        :alt="product.name"
-                    />
-                    <div class="card-body d-flex flex-column">
-                        <div
-                            class="d-flex justify-content-between align-items-center mb-2"
-                        >
-                            <h5 class="card-title mb-0">{{ product.name }}</h5>
-                        </div>
-                        <p class="card-text text-truncate mb-3">
-                            {{ product.description }}
-                        </p>
-                        <div
-                            class="mt-auto d-flex justify-content-between align-items-center"
-                        >
-                            <span class="fw-bold text-primary"
-                                >$ {{ product.price }}</span
+                    <router-link
+                        :to="`/products/${product.id}`"
+                        class="text-decoration-none text-dark"
+                    >
+                        <img
+                            :src="
+                                product.image
+                                    ? `/storage/${product.image}`
+                                    : '/placeholder.png'
+                            "
+                            class="card-img-top"
+                            :alt="product.name"
+                        />
+                        <div class="card-body d-flex flex-column">
+                            <div
+                                class="d-flex justify-content-between align-items-center mb-2"
                             >
-                            <button
-                                class="btn btn-primary btn-sm"
-                                @click="viewDetails(product.id)"
+                                <h5 class="card-title mb-0">
+                                    {{ product.name }}
+                                </h5>
+                            </div>
+                            <p class="card-text text-truncate mb-3">
+                                {{ product.description }}
+                            </p>
+                            <div
+                                class="mt-auto d-flex justify-content-between align-items-center"
                             >
-                                View Details
-                            </button>
+                                <span class="fw-bold text-primary"
+                                    >{{ product.price }} ₾</span
+                                >
+                                <button
+                                    class="btn btn-primary btn-sm"
+                                    @click="viewDetails(product.id)"
+                                >
+                                    View Details
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    </router-link>
                 </div>
             </div>
         </div>

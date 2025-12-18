@@ -27,7 +27,6 @@ import aboutimg from "../../images/evlabimage.png"; // background image
 <style scoped>
 /* SECTION WITH BACKGROUND */
 .about-section {
-    min-height: 100vh;
     padding: 100px 20px;
     display: flex;
     justify-content: center;

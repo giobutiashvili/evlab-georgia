@@ -13,4 +13,9 @@ class ProductController extends Controller
         $products = Product::orderBy('created_at', 'desc')->get();
         return response()->json($products);
     }
+    public function show($id)
+    {
+        $product = Product::findOrFail($id);
+        return response()->json($product);
+    }
 }
