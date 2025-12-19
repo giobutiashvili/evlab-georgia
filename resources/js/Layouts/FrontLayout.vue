@@ -1,8 +1,8 @@
 <template>
-    <main class="d-flex flex-column">
+    <main class="d-flex flex-column min-vh-100">
         <Header />
 
-        <section class="container my-4 d-flex flex-column flex-fill">
+        <section class="container my-4 flex-grow-1 d-flex flex-column">
             <router-view />
         </section>
 

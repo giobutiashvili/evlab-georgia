@@ -20,7 +20,6 @@ import AdminLogin from '@/AdminVue/AdminLogin.vue';
 const routes = [
    { path: '/', redirect: '/home' },
   { 
-    
     path: '/',
     component: FrontLayout,
     children: [
@@ -29,14 +28,12 @@ const routes = [
       { path: 'products/:id', name: 'ProductDetails', component: ProductDetails, meta: { title: 'Product Details' } },
       { path: 'about', name: 'AboutUs', component: AboutUs ,meta: { title: 'About Us' } },
       { path: 'contact', name: 'Contact', component: Contact ,  meta: { title: 'Contact Us' }}
-
     ]
-    
   },
 
   // ADmin Routs 
 
-
+  {path: '/admin', redirect: '/admin/login'},
   {
     path: '/admin',
     component: AdminLayout,

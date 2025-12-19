@@ -11,13 +11,28 @@
                 <label for="productImage" class="form-label"
                     >Product Image</label
                 >
+                <div v-if="previews.length">
+                    <div
+                        v-for="(src, index) in previews"
+                        :key="index"
+                        class="d-flex gap-3 align-items-center"
+                    >
+                        <img :src="src" width="50" />
+                        <button
+                            class="btn btn-danger btn-small"
+                            @click="removeFile(index)"
+                        >
+                            X
+                        </button>
+                    </div>
+                </div>
                 <input
                     type="file"
                     id="productImage"
                     class="form-control mb-3"
                     accept="image/*"
                     multiple
-                    @change="productImage"
+                    @change="handleFiles"
                     required
                 />
             </div>
@@ -65,23 +80,37 @@
     </div>
 </template>
 
-<script setup="">
+<script setup>
 import { ref } from "vue";
 import axios from "axios";
 
-const image = ref(null);
+const files = ref([]); // ყველა სურათი array-ში (single ან multiple)
+const previews = ref([]); // preview URLs
+const name = ref(""); // product name
+const price = ref(""); // product price
+const description = ref(""); // product description
 
-const name = ref("");
-const price = ref("");
-const description = ref("");
+const handleFiles = (event) => {
+    const selectedFiles = Array.from(event.target.files); // single ან multiple
+    files.value = selectedFiles;
 
-const productImage = (event) => {
-    image.value = event.target.files[0]; // მხოლოდ 1 სურათი
+    // Previews generate
+    previews.value = selectedFiles.map((file) => URL.createObjectURL(file));
+};
+const removeFile = (index) => {
+    files.value.splice(index, 1);
+    previews.value.splice(index, 1);
 };
 
 const products = async () => {
     const formData = new FormData();
-    formData.append("image", image.value);
+
+    // Attach files
+    files.value.forEach((file) => {
+        formData.append("images[]", file); // backend understands first file = main_image
+    });
+
+    // Attach product data
     formData.append("name", name.value);
     formData.append("price", price.value);
     formData.append("description", description.value);
@@ -98,13 +127,15 @@ const products = async () => {
                 },
             }
         );
-        console.log(response.data);
-        image.value = null;
+
+        console.log("Product added successfully:", response.data);
+
+        // Reset form
+        files.value = [];
+        previews.value = [];
         name.value = "";
         price.value = "";
         description.value = "";
-
-        console.log("Product added successfully:", response.data);
     } catch (error) {
         console.error("Error adding product:", error);
     }

@@ -4,18 +4,24 @@
             <button class="back-btn" @click="$router.back()">← Back</button>
             <div class="row h-100 align-items-center">
                 <!-- IMAGE -->
-                <div class="col-md-6 image-wrapper">
-                    <img
-                        :src="
-                            product.image
-                                ? `/storage/${product.image}`
-                                : '/placeholder.png'
-                        "
-                        :alt="product.name"
-                    />
-                </div>
-
                 <div class="col-md-6 info-wrapper">
+                    <div class="main-image">
+                        <img
+                            :src="`/storage/${activeImage}`"
+                            alt="Product image"
+                        />
+                    </div>
+
+                    <div class="thumbnails">
+                        <img
+                            v-for="image in product.images"
+                            :key="image.id"
+                            :src="`/storage/${image.path}`"
+                            @mouseover="activeImage = image.path"
+                            :class="{ active: activeImage === image.path }"
+                        />
+                    </div>
+
                     <h2 class="product-title">{{ product.name }}</h2>
 
                     <p class="product-description">
@@ -23,6 +29,8 @@
                     </p>
 
                     <div class="product-price">{{ product.price }} ₾</div>
+
+                    <!-- THUMBNAILS -->
                 </div>
             </div>
         </div>
@@ -35,8 +43,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
+
 import axios from "axios";
 
 const route = useRoute();
@@ -53,87 +62,80 @@ onMounted(async () => {
         console.error("AXIOS ERROR:", err.response || err);
     }
 });
+
+const activeImage = ref(null);
+
+// როცა product ჩაიტვირთება → main image ავტომატურად
+watch(
+    () => product.images,
+    (images) => {
+        if (!images || images.length === 0) return;
+
+        const main = images.find((img) => img.is_main);
+        activeImage.value = main ? main.path : images[0].path;
+    },
+    { immediate: true }
+);
 </script>
 <style scoped>
-/* CARD */
-.product-card {
-    min-height: 80vh;
-    background: linear-gradient(135deg, #ffffff, #f9fafb);
-    border-radius: 24px;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
-    padding: 50px;
-    display: flex;
-    align-items: center;
-    animation: fadeUp 0.6s ease;
-}
-
-/* IMAGE WRAPPER */
-.image-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-}
-
-/* IMAGE */
-.image-wrapper img {
-    width: 100%;
-    max-height: 600px;
-    object-fit: contain;
-    background: radial-gradient(circle, #f1f3f5, #e9ecef);
-    padding: 40px;
-    border-radius: 24px;
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-}
-
-/* IMAGE HOVER */
-.image-wrapper img:hover {
-    transform: scale(1.08);
-    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.18);
-}
-
-/* INFO */
 .info-wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    height: 100%;
-    padding-left: 30px;
+    gap: 16px;
 }
 
-/* TITLE */
-.product-title {
-    font-size: 2.4rem;
-    font-weight: 800;
-    margin-bottom: 25px;
-    letter-spacing: -0.5px;
+/* MAIN IMAGE */
+.main-image img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    border-radius: 16px;
+    background: #f3f3f3;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+    transition: opacity 0.25s ease;
 }
 
-/* DESCRIPTION */
-.product-description {
-    font-size: 1.05rem;
-    line-height: 1.8;
-    color: #6c757d;
-    max-height: 220px;
-    overflow: hidden;
-}
-
-/* PRICE */
-.product-price {
-    margin-top: 30px;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #0d6efd;
-}
-
-/* LOADING */
-.loading-wrapper {
-    min-height: 70vh;
+/* THUMBNAILS */
+.thumbnails {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    gap: 10px;
 }
+
+.thumbnails img {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 10px;
+    cursor: pointer;
+    opacity: 0.5;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.thumbnails img:hover,
+.thumbnails img.active {
+    opacity: 1;
+    border-color: #fdfdfd;
+    transform: scale(1.05);
+}
+
+/* TEXT */
+.product-title {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.product-description {
+    color: #eeebeb;
+    line-height: 1.6;
+}
+
+.product-price {
+    font-size: 26px;
+    font-weight: 700;
+    color: #061429;
+}
+
 .product-card {
     position: relative;
 }

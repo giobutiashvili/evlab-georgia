@@ -14,21 +14,31 @@ class AdminProductController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'description' => 'nullable|string',
-            'image' => 'required|mimes:jpg,jpeg,png,webp,avif|max:4096', // მხოლოდ ერთი სურათი
+            'images' => 'required', // input field name
+            'images.*' => 'mimes:jpg,jpeg,png,webp,avif|max:4096',
         ]);
 
         try {
-            $imagePath = null;
-            if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('products', 'public');
-            }
-
             $product = Product::create([
                 'name' => $request->name,
                 'price' => $request->price,
                 'description' => $request->description,
-                'image' => $imagePath,
+
             ]);
+
+            $folder = 'products/' . $product->id;
+
+
+            $files = $request->file('images'); // single or multiple
+            if ($files) {
+                $files = is_array($files) ? $files : [$files]; // force array
+                foreach ($files as $index => $file) {
+                    $product->images()->create([
+                        'path' => $file->store($folder, 'public'),
+                        'is_main' => $index === 0, // პირველი ფაილი main_image
+                    ]);
+                }
+            }
 
             return response()->json([
                 'message' => 'Product added successfully',

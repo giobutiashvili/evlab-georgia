@@ -1,6 +1,6 @@
 <template>
-    <div class="container my-4">
-        <div class="row g-4">
+    <div class="container my-4 justify-content-center flex-column d-flex">
+        <div v-if="products.length > 0" class="row g-4">
             <div class="col-md-4" v-for="product in products" :key="product.id">
                 <div class="card h-100 shadow-sm product-card">
                     <router-link
@@ -8,13 +8,12 @@
                         class="text-decoration-none text-dark"
                     >
                         <img
+                            class="card-img-top"
                             :src="
-                                product.image
-                                    ? `/storage/${product.image}`
+                                product.images.length
+                                    ? `/storage/${product.images[0].path}`
                                     : '/placeholder.png'
                             "
-                            class="card-img-top"
-                            :alt="product.name"
                         />
                         <div class="card-body d-flex flex-column">
                             <div
@@ -45,6 +44,11 @@
                 </div>
             </div>
         </div>
+        <div>
+            <h1 v-if="products.length === 0" class="text-center">
+                No products available.
+            </h1>
+        </div>
     </div>
 </template>
 
@@ -57,6 +61,7 @@ const products = ref([]);
 onMounted(async () => {
     try {
         const response = await axios.get("/api/products");
+
         products.value = response.data;
     } catch (error) {
         console.error("Error fetching products:", error);

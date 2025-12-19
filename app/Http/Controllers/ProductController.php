@@ -9,13 +9,15 @@ class ProductController extends Controller
 {
     public function index()
     {
-        // public, ყველა მომხმარებლისთვის
-        $products = Product::orderBy('created_at', 'desc')->get();
+        $products = Product::with('images')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         return response()->json($products);
     }
     public function show($id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::with('images')->findOrFail($id);
         return response()->json($product);
     }
 }
