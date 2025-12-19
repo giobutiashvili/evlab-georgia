@@ -14,7 +14,7 @@
 import Header from "./Components/Header.vue";
 import Footer from "./Components/Footer.vue";
 </script>
-
+//style 
 <style>
 main {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
