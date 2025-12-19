@@ -6,7 +6,10 @@
     </main>
 </template>
 
-<script setup></script>
+<script setup>
+import Header from "./Components/Header.vue";
+import Footer from "./Components/Footer.vue";
+</script>
 
 <style>
 main {
