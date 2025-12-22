@@ -23,7 +23,7 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader
 
 # Install Node dependencies and build frontend assets
-RUN npm install --legacy-peer-deps
+RUN npm ci --legacy-peer-deps
 RUN npm run build
 
 # Expose port
