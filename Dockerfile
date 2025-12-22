@@ -10,6 +10,12 @@ WORKDIR /var/www/html
 COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
+# Node + npm
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install \
+    && npm run build
+
 
 EXPOSE 8080
 CMD php -S 0.0.0.0:8080 -t public
