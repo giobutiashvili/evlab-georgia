@@ -51,7 +51,7 @@ import axios from "axios";
 const route = useRoute();
 const id = route.params.id;
 
-const product = ref(null);
+const product = ref({ images: [] });
 
 onMounted(async () => {
     try {
@@ -67,10 +67,9 @@ const activeImage = ref(null);
 
 // როცა product ჩაიტვირთება → main image ავტომატურად
 watch(
-    () => product.images,
+    () => product.value.images,
     (images) => {
         if (!images || images.length === 0) return;
-
         const main = images.find((img) => img.is_main);
         activeImage.value = main ? main.path : images[0].path;
     },
