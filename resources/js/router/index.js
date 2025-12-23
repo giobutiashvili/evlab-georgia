@@ -69,9 +69,13 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  document.title = to.meta?.title || 'EvLab' // fallback title
-  next()
-})
+  if (to.meta.requiresAdmin) {
+    const token = localStorage.getItem('adminToken');
+    if (!token) return next({ name: 'AdminLogin' });
+  }
+  document.title = to.meta?.title || 'EvLab' 
+  next();
+});
 
 
 export default router;

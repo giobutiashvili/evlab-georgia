@@ -29,7 +29,7 @@
                     <td>
                         <img
                             :src="
-                                product.images.length
+                                product.images
                                     ? `/storage/${product.images[0].path}`
                                     : '/placeholder.png'
                             "

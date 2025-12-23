@@ -53,14 +53,19 @@ class AdminProductController extends Controller
 
     public function index()
     {
-        $products = Product::orderby('created_at', 'desc')->get();
+        $products = Product::with('images') // <-- relation აქ
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         return response()->json($products);
     }
+
     public function show($id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::with('images')->findOrFail($id); // <-- ერთი ხაზით
         return response()->json($product);
     }
+
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
