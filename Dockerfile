@@ -3,8 +3,8 @@ FROM php:8.1-fpm
 
 # System dependencies
 RUN apt-get update && apt-get install -y \
-    git unzip zip libzip-dev libpng-dev libonig-dev curl \
-    && docker-php-ext-install pdo pdo_mysql mbstring zip \
+    git unzip zip libzip-dev libpng-dev libonig-dev curl libxml2-dev \
+    && docker-php-ext-install pdo pdo_mysql mbstring zip bcmath xml intl \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
@@ -18,21 +18,28 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy only dependency files first for better caching
-COPY composer.json composer.lock ./
+# Copy only dependency files first for caching
+COPY composer.json composer.lock ./ 
 COPY package.json package-lock.json ./
 
+# Create necessary Laravel directories with correct permissions
+RUN mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views bootstrap/cache \
+    && chmod -R 777 storage bootstrap/cache
+
 # Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader --prefer-dist
+RUN composer install --no-dev --optimize-autoloader --prefer-dist --ignore-platform-reqs
 
 # Install Node dependencies
 RUN npm ci --legacy-peer-deps
 
-# Copy remaining project files
+# Copy the rest of the project
 COPY . .
+
+# Build frontend assets
+RUN npm run build
 
 # Expose port
 EXPOSE 8080
 
-# Start PHP server (for development)
+# Start PHP server (development only)
 CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]
