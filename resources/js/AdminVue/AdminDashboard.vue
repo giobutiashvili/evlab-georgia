@@ -29,8 +29,8 @@
                     <td>
                         <img
                             :src="
-                                product.image
-                                    ? `/storage/${product.image}`
+                                product.images.length
+                                    ? `/storage/${product.images[0].path}`
                                     : '/placeholder.png'
                             "
                             alt="product"
@@ -82,7 +82,7 @@ const fetchProducts = async () => {
         },
     });
     products.value = res.data;
-    console.log(products.value);
+    console.log("helloo", products.value);
 };
 
 const deleteProduct = async (id) => {
