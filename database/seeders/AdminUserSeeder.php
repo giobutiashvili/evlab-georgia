@@ -14,11 +14,15 @@ class AdminUserSeeder extends Seeder
     public function run(): void
     {
         // admin info
-        User::create([
+        
+        User::firstOrCreate(
+        ['email' => 'admin@evlab.ge'],
+        [
             'name' => 'Admin',
-            'email' => 'admin@evlab.ge',
             'password' => bcrypt('pasword123'),
             'is_admin' => true,
-        ]);
+        ]
+    );
     }
+    
 }
