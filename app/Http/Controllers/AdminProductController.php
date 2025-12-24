@@ -63,6 +63,7 @@ class AdminProductController extends Controller
     public function show($id)
     {
         $product = Product::with('images')->findOrFail($id); // <-- ერთი ხაზით
+         
         return response()->json($product);
     }
 

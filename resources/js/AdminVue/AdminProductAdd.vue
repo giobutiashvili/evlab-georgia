@@ -11,7 +11,7 @@
                 <label for="productImage" class="form-label"
                     >Product Image</label
                 >
-                <div v-if="previews.length">
+                <div v-if="previews.length" class="d-flex flex-wrap gap-3 mb-3">
                     <div
                         v-for="(src, index) in previews"
                         :key="index"

@@ -1,0 +1,105 @@
+name: Deploy to production
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v4
+        with:
+          php-version: "8.1"
+          extensions: mbstring, bcmath, intl, pdo_mysql, openssl
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: Build assets
+        run: |
+          npm ci
+          npm run build
+
+      - name: Create release tarball
+        id: make_release
+        run: |
+          set -e
+          RELEASE=$(date -u +%Y%m%dT%H%M%SZ)
+          echo "RELEASE=$RELEASE" >> $GITHUB_ENV
+          tar --exclude='.git' --exclude='node_modules' --exclude='.github' --exclude='storage' --exclude='.env*' -czf release-$RELEASE.tar.gz .
+
+      - name: Upload release to server
+        uses: appleboy/scp-action@v0.1.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          source: "release-${{ env.RELEASE }}.tar.gz"
+          target: "/tmp/"
+
+      - name: Deploy release (remote)
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            set -e
+            DEPLOY_PATH=${{ secrets.DEPLOY_PATH }}
+            RELEASE=${{ env.RELEASE }}
+            RELEASE_DIR=$DEPLOY_PATH/releases/$RELEASE
+            echo "Creating release dir $RELEASE_DIR"
+            mkdir -p $DEPLOY_PATH/releases
+            mkdir -p $DEPLOY_PATH/shared
+            mkdir -p $DEPLOY_PATH/shared/storage
+            mkdir -p $RELEASE_DIR
+            tar -xzf /tmp/release-$RELEASE.tar.gz -C $RELEASE_DIR
+
+            # link shared .env if present
+            if [ -f $DEPLOY_PATH/shared/.env ]; then
+              ln -sfn $DEPLOY_PATH/shared/.env $RELEASE_DIR/.env
+            fi
+
+            # link shared storage
+            mkdir -p $RELEASE_DIR/storage/app
+            ln -sfn $DEPLOY_PATH/shared/storage $RELEASE_DIR/storage/app/public
+            ln -sfn $DEPLOY_PATH/shared/storage $RELEASE_DIR/public/storage
+
+            cd $RELEASE_DIR
+            # install vendor on server to avoid architecture mismatch
+            if command -v composer >/dev/null 2>&1; then
+              composer install --no-dev --optimize-autoloader --no-interaction || true
+            fi
+
+            chown -R www-data:www-data $RELEASE_DIR || true
+
+            # Maintenance, migrate, and switch
+            php artisan down --quiet || true
+            php artisan migrate --force --quiet || true
+
+            ln -sfn $RELEASE_DIR $DEPLOY_PATH/current
+
+            php artisan up --quiet || true
+
+            # reload services if possible
+            sudo systemctl reload php8.1-fpm || true
+            sudo systemctl reload nginx || true
+
+            # cleanup old releases (keep 5)
+            cd $DEPLOY_PATH/releases
+            ls -1dt * | tail -n +6 | xargs -r rm -rf || true
