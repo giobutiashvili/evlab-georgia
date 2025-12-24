@@ -15,7 +15,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v4
         with:
-          php-version: "8.1"
+          php-version: "8.2"
           extensions: mbstring, bcmath, intl, pdo_mysql, openssl
 
       - name: Setup Node
@@ -97,7 +97,7 @@ jobs:
             php artisan up --quiet || true
 
             # reload services if possible
-            sudo systemctl reload php8.1-fpm || true
+            sudo systemctl reload php8.2-fpm || true
             sudo systemctl reload nginx || true
 
             # cleanup old releases (keep 5)

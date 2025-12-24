@@ -12,7 +12,7 @@ sudo chown -R $USER:$USER ${APP_PATH}
 
 echo "Installing PHP extensions and tools (assumes apt)..."
 sudo apt update
-sudo apt install -y nginx git unzip curl build-essential php8.1 php8.1-fpm php8.1-mbstring php8.1-xml php8.1-bcmath php8.1-mysql php8.1-zip php8.1-curl nodejs npm
+sudo apt install -y nginx git unzip curl build-essential php8.2 php8.2-fpm php8.2-mbstring php8.2-xml php8.2-bcmath php8.2-mysql php8.2-zip php8.2-curl nodejs npm
 
 echo "Install Composer..."
 curl -sS https://getcomposer.org/installer | php
