@@ -71,12 +71,14 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const products = ref([]);
 
 const fetchProducts = async () => {
     const token = localStorage.getItem("adminToken");
 
-    const res = await axios.get("http://127.0.0.1:8000/api/admin/products", {
+    const res = await axios.get(`${API_URL}/api/admin/products`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -90,7 +92,7 @@ const deleteProduct = async (id) => {
 
     const token = localStorage.getItem("adminToken");
 
-    await axios.delete(`http://127.0.0.1:8000/api/admin/products/${id}`, {
+    await axios.delete(`${API_URL}/api/admin/products/${id}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },

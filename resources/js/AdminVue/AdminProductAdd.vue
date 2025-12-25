@@ -84,6 +84,8 @@
 import { ref } from "vue";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const files = ref([]); // ყველა სურათი array-ში (single ან multiple)
 const previews = ref([]); // preview URLs
 const name = ref(""); // product name
@@ -118,7 +120,7 @@ const products = async () => {
     try {
         const token = localStorage.getItem("adminToken");
         const response = await axios.post(
-            "http://127.0.0.1:8000/api/admin/products",
+            `${API_URL}/api/admin/products`,
             formData,
             {
                 headers: {

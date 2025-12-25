@@ -34,6 +34,7 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -45,7 +46,7 @@ const errorMessage = ref("");
 const login = async () => {
     errorMessage.value = "";
     try {
-        const resp = await axios.post("http://127.0.0.1:8000/api/admin/login", {
+        const resp = await axios.post(`${API_URL}/api/admin/login`, {
             username: username.value,
             email: email.value,
             password: password.value,

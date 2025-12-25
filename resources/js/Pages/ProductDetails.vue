@@ -48,6 +48,8 @@ import { useRoute } from "vue-router";
 
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const route = useRoute();
 const id = route.params.id;
 
@@ -55,7 +57,7 @@ const product = ref({ images: [] });
 
 onMounted(async () => {
     try {
-        const res = await axios.get(`http://127.0.0.1:8000/api/products/${id}`);
+        const res = await axios.get(`${API_URL}/api/products/${id}`);
         product.value = res.data;
         console.log("PRODUCT:", product.value);
     } catch (err) {

@@ -79,12 +79,13 @@ const newImage = ref(null);
 const handleImage = (e) => {
     newImage.value = e.target.files[0];
 };
+const API_URL = import.meta.env.VITE_API_URL;
 
 const fetchProduct = async () => {
     try {
         const token = localStorage.getItem("adminToken");
         const res = await axios.get(
-            `http://127.0.0.1:8000/api/admin/products/${productId}`,
+            `${API_URL}/api/admin/products/${productId}`,
             {
                 headers: { Authorization: `Bearer ${token}` },
             }
@@ -92,7 +93,7 @@ const fetchProduct = async () => {
         form.value = res.data;
         // Full image URL
         if (res.data.image) {
-            form.value.image = `http://127.0.0.1:8000/storage/${res.data.image}`;
+            form.value.image = `${API_URL}/storage/${res.data.image}`;
         }
 
         console.log("Fetched product:", form.value);
@@ -115,7 +116,7 @@ const updateProduct = async () => {
 
     try {
         await axios.post(
-            `http://127.0.0.1:8000/api/admin/products/${productId}`,
+            `${API_URL}/api/admin/products/${productId}`,
             formData,
             {
                 headers: {
