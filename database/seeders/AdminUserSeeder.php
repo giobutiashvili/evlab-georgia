@@ -13,7 +13,7 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
-        // admin info
+        // admin infomation
         
         User::firstOrCreate(
         ['email' => 'admin@evlab.ge'],
