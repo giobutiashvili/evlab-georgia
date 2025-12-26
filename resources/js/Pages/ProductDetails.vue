@@ -45,7 +45,6 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
-
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;

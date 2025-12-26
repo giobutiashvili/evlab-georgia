@@ -15,14 +15,14 @@ class AdminUserSeeder extends Seeder
     {
         // admin infomation
         
-        User::firstOrCreate(
-        ['email' => 'admin@evlab.ge'],
-        [
-            'name' => 'Admin',
-            'password' => bcrypt('pasword123'),
-            'is_admin' => true,
-        ]
-    );
+        User::updateOrCreate(
+    ['email' => 'admin@evlab.ge'],
+    [
+        'name' => 'Admin',
+        'password' => 'pasword1234', // bcrypt აღარ გჭირდება
+        'is_admin' => true,
+    ]
+);
     }
     
 }
