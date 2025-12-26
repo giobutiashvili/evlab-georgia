@@ -7,7 +7,16 @@
                 <div class="col-md-6 info-wrapper">
                     <div class="main-image">
                         <img
-                            :src="resolveImage(activeImage)"
+                            :src="
+                                resolveImage(
+                                    activeImage ||
+                                        (product.images &&
+                                            product.images[0]?.url) ||
+                                        (product.images &&
+                                            product.images[0]?.path) ||
+                                        null
+                                )
+                            "
                             alt="Product image"
                         />
                     </div>
@@ -16,13 +25,15 @@
                         <img
                             v-for="image in product.images || []"
                             :key="image.id || image.path"
-                            :src="
-                                resolveImage(
-                                    image && image.path ? image.path : null
-                                )
+                            :src="resolveImage(image?.url || image?.path)"
+                            @mouseover="
+                                activeImage =
+                                    image?.url || image?.path || activeImage
                             "
-                            @mouseover="activeImage = image.path || activeImage"
-                            :class="{ active: activeImage === image.path }"
+                            :class="{
+                                active:
+                                    activeImage === (image?.url || image?.path),
+                            }"
                         />
                     </div>
 
@@ -88,7 +99,9 @@ watch(
     (images) => {
         if (!images || images.length === 0) return;
         const main = images.find((img) => img.is_main);
-        activeImage.value = main ? main.path : images[0]?.path || null;
+        activeImage.value = main
+            ? main.url || main.path
+            : images[0]?.url || images[0]?.path || null;
     },
     { immediate: true }
 );

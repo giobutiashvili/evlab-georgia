@@ -57,13 +57,26 @@ class AdminProductController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        // Add full URL for each image so frontend can use it directly
+        $products->each(function ($p) {
+            $p->images->transform(function ($img) {
+                $img->url = url(Storage::url($img->path));
+                return $img;
+            });
+        });
+
         return response()->json($products);
     }
 
     public function show($id)
     {
         $product = Product::with('images')->findOrFail($id); // <-- ერთი ხაზით
-         
+        // Add full URL on images
+        $product->images->transform(function ($img) {
+            $img->url = url(Storage::url($img->path));
+            return $img;
+        });
+
         return response()->json($product);
     }
 
