@@ -34,7 +34,6 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
-const API_URL = import.meta.env.VITE_API_URL;
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -42,6 +41,7 @@ const username = ref("");
 const password = ref("");
 const email = ref("");
 const errorMessage = ref("");
+const API_URL = import.meta.env.VITE_API_URL;
 
 const login = async () => {
     errorMessage.value = "";
