@@ -29,8 +29,8 @@
                     <td>
                         <img
                             :src="
-                                product.images
-                                    ? `/storage/${product.images[0].path}`
+                                product.images && product.images.length > 0
+                                    ? `/storage/${product.images[0]?.path}`
                                     : '/placeholder.png'
                             "
                             alt="product"

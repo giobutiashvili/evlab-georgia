@@ -7,17 +7,27 @@
                 <div class="col-md-6 info-wrapper">
                     <div class="main-image">
                         <img
-                            :src="`/storage/${activeImage}`"
+                            :src="
+                                activeImage
+                                    ? `/storage/${activeImage}`
+                                    : '/placeholder.png'
+                            "
                             alt="Product image"
                         />
                     </div>
 
                     <div class="thumbnails">
                         <img
-                            v-for="image in product.images"
-                            :key="image.id"
-                            :src="`/storage/${image.path}`"
-                            @mouseover="activeImage = image.path"
+                            v-for="image in product.images || []"
+                            :key="image.id || image.path"
+                            :src="
+                                image && image.path
+                                    ? `/storage/${image.path}`
+                                    : '/placeholder.png'
+                            "
+                            @mouseover="
+                                () => (activeImage = image.path || activeImage)
+                            "
                             :class="{ active: activeImage === image.path }"
                         />
                     </div>
@@ -72,7 +82,7 @@ watch(
     (images) => {
         if (!images || images.length === 0) return;
         const main = images.find((img) => img.is_main);
-        activeImage.value = main ? main.path : images[0].path;
+        activeImage.value = main ? main.path : images[0]?.path || null;
     },
     { immediate: true }
 );

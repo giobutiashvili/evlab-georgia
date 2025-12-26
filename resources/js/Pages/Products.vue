@@ -10,8 +10,8 @@
                         <img
                             class="card-img-top"
                             :src="
-                                product.images.length
-                                    ? `/storage/${product.images[0].path}`
+                                product.images && product.images.length > 0
+                                    ? `/storage/${product.images[0]?.path}`
                                     : '/placeholder.png'
                             "
                         />
@@ -55,15 +55,15 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const products = ref([]);
 
 onMounted(async () => {
     try {
-        const response = await axios.get("/api/products");
+        const response = await axios.get(`${API_URL}/api/products`);
 
         products.value = response.data;
-        console.log(products.images);
     } catch (error) {
         console.error("Error fetching products:", error);
     }
