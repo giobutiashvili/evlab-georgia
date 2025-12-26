@@ -10,9 +10,11 @@
                         <img
                             class="card-img-top"
                             :src="
-                                product.images && product.images.length > 0
-                                    ? `/storage/${product.images[0]?.path}`
-                                    : '/placeholder.png'
+                                resolveImage(
+                                    product.images && product.images.length > 0
+                                        ? product.images[0]?.path
+                                        : null
+                                )
                             "
                         />
                         <div class="card-body d-flex flex-column">
@@ -57,6 +59,18 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 const API_URL = import.meta.env.VITE_API_URL;
 
+const resolveImage = (path) => {
+    if (!path) return "/placeholder.png";
+    try {
+        new URL(path);
+        return path;
+    } catch (e) {
+        const clean = String(path).replace(/^\/+/, "");
+        if (clean.startsWith("storage/")) return `${API_URL}/${clean}`;
+        return `${API_URL}/storage/${clean}`;
+    }
+};
+
 const products = ref([]);
 
 onMounted(async () => {
@@ -64,7 +78,7 @@ onMounted(async () => {
         const response = await axios.get(`${API_URL}/api/products`);
 
         products.value = response.data;
-        console.Login("products:", products.images);
+        console.log("products:", products.images);
     } catch (error) {
         console.error("Error fetching products:", error);
     }

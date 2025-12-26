@@ -7,11 +7,7 @@
                 <div class="col-md-6 info-wrapper">
                     <div class="main-image">
                         <img
-                            :src="
-                                activeImage
-                                    ? `/storage/${activeImage}`
-                                    : '/placeholder.png'
-                            "
+                            :src="resolveImage(activeImage)"
                             alt="Product image"
                         />
                     </div>
@@ -21,13 +17,11 @@
                             v-for="image in product.images || []"
                             :key="image.id || image.path"
                             :src="
-                                image && image.path
-                                    ? `/storage/${image.path}`
-                                    : '/placeholder.png'
+                                resolveImage(
+                                    image && image.path ? image.path : null
+                                )
                             "
-                            @mouseover="
-                                () => (activeImage = image.path || activeImage)
-                            "
+                            @mouseover="activeImage = image.path || activeImage"
                             :class="{ active: activeImage === image.path }"
                         />
                     </div>
@@ -63,6 +57,18 @@ const route = useRoute();
 const id = route.params.id;
 
 const product = ref({ images: [] });
+
+const resolveImage = (path) => {
+    if (!path) return "/placeholder.png";
+    try {
+        new URL(path);
+        return path;
+    } catch (e) {
+        const clean = String(path).replace(/^\/+/, "");
+        if (clean.startsWith("storage/")) return `${API_URL}/${clean}`;
+        return `${API_URL}/storage/${clean}`;
+    }
+};
 
 onMounted(async () => {
     try {
