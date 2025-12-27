@@ -79,7 +79,21 @@ onMounted(async () => {
         const response = await axios.get(`${API_URL}/api/products`);
 
         products.value = response.data;
-        console.log("products:", products.images);
+        console.log("products:", products.value);
+        if (products.value && products.value.length > 0) {
+            products.value.forEach((p) => {
+                const imgPath =
+                    p.images && p.images.length > 0
+                        ? p.images[0].url || p.images[0].path
+                        : null;
+                console.log(
+                    `product ${p.id} image raw:`,
+                    imgPath,
+                    "resolved:",
+                    resolveImage(imgPath)
+                );
+            });
+        }
     } catch (error) {
         console.error("Error fetching products:", error);
     }
