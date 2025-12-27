@@ -62,14 +62,28 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const resolveImage = (path) => {
     if (!path) return "/placeholder.png";
+    if (typeof path === "object") {
+        path = path.url || path.path || null;
+    }
+    if (!path) return "/placeholder.png";
     try {
         new URL(path);
         return path;
     } catch (e) {
-        const clean = String(path).replace(/^\/+/, "");
-        if (clean.startsWith("storage/")) return `${API_URL}/${clean}`;
-        return `${API_URL}/storage/${clean}`;
+        // fallthrough to build from API_URL
     }
+    const clean = String(path).replace(/^\/+/, "");
+    if (clean.startsWith("storage/")) return `${API_URL}/${clean}`;
+    return `${API_URL}/storage/${clean}`;
+};
+
+const getFirstImagePath = (product) => {
+    if (!product) return null;
+    if (product.images && product.images.length > 0) {
+        const first = product.images[0];
+        return first.url || first.path || first;
+    }
+    return product.image || null;
 };
 
 const products = ref([]);
@@ -79,18 +93,17 @@ onMounted(async () => {
         const response = await axios.get(`${API_URL}/api/products`);
 
         products.value = response.data;
-        console.log("products:", products.value);
+        console.log("raw response.data:", response.data);
+        console.log("products (assigned):", products.value);
         if (products.value && products.value.length > 0) {
             products.value.forEach((p) => {
-                const imgPath =
-                    p.images && p.images.length > 0
-                        ? p.images[0].url || p.images[0].path
-                        : null;
+                console.log("product object:", p);
+                const imgRaw = getFirstImagePath(p);
                 console.log(
                     `product ${p.id} image raw:`,
-                    imgPath,
+                    imgRaw,
                     "resolved:",
-                    resolveImage(imgPath)
+                    resolveImage(imgRaw)
                 );
             });
         }
@@ -126,7 +139,6 @@ const viewDetails = (id) => {
 
 .card-text {
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* truncate 2 lines */
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
