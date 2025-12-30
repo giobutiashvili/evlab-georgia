@@ -10,12 +10,9 @@
                         <img
                             class="card-img-top"
                             :src="
-                                resolveImage(
-                                    product.images && product.images.length > 0
-                                        ? product.images[0]?.url ||
-                                              product.images[0]?.path
-                                        : null
-                                )
+                                product.images && product.images.length
+                                    ? `${API_URL}/storage/${product.images[0].path}`
+                                    : '/placeholder.png'
                             "
                         />
                         <div class="card-body d-flex flex-column">
@@ -60,61 +57,24 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 const API_URL = import.meta.env.VITE_API_URL;
 
-const resolveImage = (path) => {
-    if (!path) return "/placeholder.png";
-    if (typeof path === "object") {
-        path = path.url || path.path || null;
-    }
-    if (!path) return "/placeholder.png";
-    try {
-        new URL(path);
-        return path;
-    } catch (e) {
-        // fallthrough to build from API_URL
-    }
-    const clean = String(path).replace(/^\/+/, "");
-    if (clean.startsWith("storage/")) return `${API_URL}/${clean}`;
-    return `${API_URL}/storage/${clean}`;
-};
 
-const getFirstImagePath = (product) => {
-    if (!product) return null;
-    if (product.images && product.images.length > 0) {
-        const first = product.images[0];
-        return first.url || first.path || first;
-    }
-    return product.image || null;
-};
 
 const products = ref([]);
 
-onMounted(async () => {
+const getproducts = async => {
     try {
         const response = await axios.get(`${API_URL}/api/products`);
 
         products.value = response.data;
-        console.log("raw response.data:", response.data);
+
         console.log("products (assigned):", products.value);
-        if (products.value && products.value.length > 0) {
-            products.value.forEach((p) => {
-                console.log("product object:", p);
-                const imgRaw = getFirstImagePath(p);
-                console.log(
-                    `product ${p.id} image raw:`,
-                    imgRaw,
-                    "resolved:",
-                    resolveImage(imgRaw)
-                );
-            });
-        }
+
     } catch (error) {
         console.error("Error fetching products:", error);
     }
-});
+}
 
-const viewDetails = (id) => {
-    console.log("View details for product ID:", id);
-};
+onMounted(getproducts);
 </script>
 
 <style scoped>
