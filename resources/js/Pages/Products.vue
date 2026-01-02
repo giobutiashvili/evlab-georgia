@@ -57,22 +57,19 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 const API_URL = import.meta.env.VITE_API_URL;
 
-
-
 const products = ref([]);
 
-const getproducts = async => {
+const getproducts = async () => {
     try {
         const response = await axios.get(`${API_URL}/api/products`);
 
         products.value = response.data;
 
         console.log("products (assigned):", products.value);
-
     } catch (error) {
         console.error("Error fetching products:", error);
     }
-}
+};
 
 onMounted(getproducts);
 </script>
