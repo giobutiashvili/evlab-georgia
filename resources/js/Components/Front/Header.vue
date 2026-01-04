@@ -60,14 +60,19 @@
                 <div
                     class="d-flex gap-3 align-items-center ms-lg-3 language-switcher"
                 >
-                    <button class="btn btn-link p-0" aria-label="Georgian">
+                    <button
+                        class="btn btn-link p-0"
+                        aria-label="Georgian"
+                        @click="changeLang('ge')"
+                    >
                         <span class="fi fi-ge" style="font-size: 20px"></span>
                     </button>
-                    <button class="btn btn-link p-0" aria-label="English">
+                    <button
+                        class="btn btn-link p-0"
+                        aria-label="English"
+                        @click="changeLang('en')"
+                    >
                         <span class="fi fi-us" style="font-size: 20px"></span>
-                    </button>
-                    <button class="btn btn-link p-0" aria-label="Russian">
-                        <span class="fi fi-ru" style="font-size: 20px"></span>
                     </button>
                 </div>
             </div>
@@ -78,6 +83,13 @@
 <script setup>
 import { useRoute } from "vue-router";
 const route = useRoute();
+import { useI18n } from "vue-i18n";
+const { locale } = useI18n();
+
+const changeLang = (lang) => {
+    locale.value = lang;
+    localStorage.setItem("lang", lang);
+};
 </script>
 
 <style scoped>
