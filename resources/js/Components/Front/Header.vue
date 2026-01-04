@@ -105,7 +105,6 @@ const changeLang = (lang) => {
 }
 
 .nav-item .nav-link {
-    width: 90px;
     text-align: center;
     color: #f5f4fa;
     padding: 0.45rem 0.85rem;

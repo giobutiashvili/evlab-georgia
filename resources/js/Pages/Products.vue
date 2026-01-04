@@ -32,10 +32,7 @@
                                 <span class="fw-bold text-primary"
                                     >{{ product.price }} ₾</span
                                 >
-                                <button
-                                    class="btn btn-primary btn-sm"
-                                    @click="viewDetails(product.id)"
-                                >
+                                <button class="btn btn-primary btn-sm">
                                     {{ $t("view_details") }}
                                 </button>
                             </div>
