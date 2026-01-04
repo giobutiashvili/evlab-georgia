@@ -1,7 +1,9 @@
 <template>
     <div class="container my-5">
         <div v-if="product" class="product-card">
-            <button class="back-btn" @click="$router.back()">← Back</button>
+            <button class="back-btn" @click="$router.back()">
+                ← {{ $t("back") }}
+            </button>
             <div class="row h-100 align-items-center">
                 <!-- IMAGE -->
                 <div class="col-md-6 info-wrapper">
@@ -52,7 +54,7 @@
 
         <div v-else class="loading-wrapper">
             <div class="spinner-border text-primary mb-3"></div>
-            <p class="text-muted">Loading product details...</p>
+            <p class="text-muted">{{ $t("loading_product_details") }}</p>
         </div>
     </div>
 </template>

@@ -6,14 +6,10 @@
             </div>
 
             <div class="hero-right">
-                <h1>Power the Future with Smart EV Charging</h1>
-                <p>
-                    Explore high-performance EV charging solutions built for
-                    homes, businesses, and public locations. Fast, reliable and
-                    future-ready.
-                </p>
+                <h1>{{ $t("welcome") }}</h1>
+                <p>{{ $t("hero_subtext") }}</p>
                 <router-link to="/products"
-                    ><button class="cta-btn">Browse Catalog</button>
+                    ><button class="cta-btn">{{ $t("browse_catalog") }}</button>
                 </router-link>
             </div>
         </div>

@@ -3,15 +3,21 @@
     "welcome": "Power the Future with Smart EV Charging",
     "home": "Home",
     "about_us": "About Us",
+    "about": "About",
     "products": "Products",
     "contact": "Contact",
     "view_details": "View Details",
     "browse_catalog": "Browse Catalog",
+    "hero_subtext": "Explore high-performance EV charging solutions built for homes, businesses, and public locations. Fast, reliable and future-ready.",
     "send_us_message": "Send Us a Message",
     "your_name": "Your Name",
     "your_email": "Your Email",
     "your_message": "Your Message",
     "your_phone": "Your Phone",
     "send_message": "Send Message"
+    ,
+    "no_products": "No products available.",
+    "back": "Back",
+    "loading_product_details": "Loading product details..."
 
 }

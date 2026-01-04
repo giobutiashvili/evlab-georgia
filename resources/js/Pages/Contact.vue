@@ -4,12 +4,12 @@
             <div class="top-row">
                 <!-- Contact Form -->
                 <div class="contact-form">
-                    <h2>Send Us a Message</h2>
+                    <h2>{{ $t("send_us_message") }}</h2>
                     <form>
                         <div class="form-group">
                             <input
                                 type="text"
-                                placeholder="Your Name"
+                                :placeholder="$t('your_name')"
                                 id="name"
                                 required
                                 maxlength="20"
@@ -18,7 +18,7 @@
                         <div class="form-group">
                             <input
                                 type="email"
-                                placeholder="Your Email"
+                                :placeholder="$t('your_email')"
                                 id="email"
                                 required
                                 maxlength="30"
@@ -27,7 +27,7 @@
                         <div class="form-group">
                             <input
                                 type="phone"
-                                placeholder="Your phone"
+                                :placeholder="$t('your_phone')"
                                 id="phone"
                                 required
                                 maxlength="30"
@@ -35,21 +35,23 @@
                         </div>
                         <div class="form-group">
                             <textarea
-                                placeholder="Your Message"
+                                :placeholder="$t('your_message')"
                                 id="message"
                                 required
                                 maxlength="500"
                             ></textarea>
                         </div>
                         <div class="form-group">
-                            <button type="submit">Send Message</button>
+                            <button type="submit">
+                                {{ $t("send_message") }}
+                            </button>
                         </div>
                     </form>
                 </div>
 
                 <!-- Contact Info -->
                 <div class="contact-info">
-                    <h2>Contact Us</h2>
+                    <h2>{{ $t("contact") }}</h2>
                     <p @click="openmap" class="map-link">
                         <i class="fas fa-map-marker-alt"></i> EV-Lab Georgia
                     </p>

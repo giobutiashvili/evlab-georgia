@@ -36,7 +36,7 @@
                                     class="btn btn-primary btn-sm"
                                     @click="viewDetails(product.id)"
                                 >
-                                    View Details
+                                    {{ $t("view_details") }}
                                 </button>
                             </div>
                         </div>
@@ -46,7 +46,7 @@
         </div>
         <div>
             <h1 v-if="products.length === 0" class="text-center">
-                No products available.
+                {{ $t("no_products") }}
             </h1>
         </div>
     </div>

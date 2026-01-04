@@ -63,7 +63,7 @@
                     <button
                         class="btn btn-link p-0"
                         aria-label="Georgian"
-                        @click="changeLang('ge')"
+                        @click="changeLang('ka')"
                     >
                         <span class="fi fi-ge" style="font-size: 20px"></span>
                     </button>
