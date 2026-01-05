@@ -145,7 +145,6 @@ This project does not include a production-ready localization system by default.
 -   Server-side (recommended for mixed Blade + SPA apps): add translation files under `resources/lang/<locale>/`, a small `config/locales.php` listing available locales, a `LocaleController` + `routes/locale.php` endpoint to switch the session locale, and a `SetLocale` middleware to call `app()->setLocale()` on each request.
 -   Client-side (SPA-only): use `vue-i18n` and store the chosen locale in `localStorage` (instant switching, no server roundtrip).
 
-If you'd like, I can add the server-side option (controller, middleware, route, example translations) or integrate `vue-i18n` on the frontend — tell me which approach you prefer.
 
 ## Common developer tasks / troubleshooting
 
@@ -160,10 +159,3 @@ If you'd like, I can add the server-side option (controller, middleware, route, 
 -   Keep frontend changes small and test with `npm run dev`.
 
 ---
-
-If you want, I can now:
-
--   add a server-side locale implementation (controller + middleware + config + example translations),
--   or integrate `vue-i18n` for SPA translations and update `Header.vue` to use it.
-
-Tell me which one to implement and I'll add the code and update this README with exact usage instructions.
