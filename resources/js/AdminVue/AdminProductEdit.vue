@@ -91,7 +91,8 @@ const fetchProduct = async () => {
             }
         );
         form.value = res.data;
-        // Full image URL
+
+        // Ensure the image URL is absolute
         if (res.data.image) {
             form.value.image = `${API_URL}/storage/${res.data.image}`;
         }
@@ -106,10 +107,11 @@ const updateProduct = async () => {
     console.log("Updating product with data:", form.value);
     const token = localStorage.getItem("adminToken");
     const formData = new FormData();
-    formData.append("name", String(form.value.name));
-    formData.append("price", Number(form.value.price));
-    formData.append("description", String(form.value.description));
+    formData.append("name", form.value.name);
+    formData.append("price", form.value.price);
+    formData.append("description", form.value.description);
 
+    // Append the new image if it exists
     if (newImage.value) {
         formData.append("image", newImage.value);
     }
@@ -121,7 +123,7 @@ const updateProduct = async () => {
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data",
+                    "Content-Type": "multipart/form-data", // Ensure correct content type
                 },
             }
         );
