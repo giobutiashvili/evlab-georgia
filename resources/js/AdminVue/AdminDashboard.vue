@@ -99,7 +99,7 @@ const fetchProducts = async () => {
         },
     });
     products.value = res.data;
-    console.log("helloo", products.value);
+    console.log("products value", products.value);
 };
 
 const deleteProduct = async (id) => {

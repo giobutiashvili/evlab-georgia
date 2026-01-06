@@ -90,12 +90,17 @@ const fetchProduct = async () => {
                 headers: { Authorization: `Bearer ${token}` },
             }
         );
-        form.value = res.data;
 
-        // Ensure the image URL is absolute
-        if (res.data.image) {
-            form.value.image = `${API_URL}/storage/${res.data.image}`;
-        }
+        const data = res.data;
+
+        const mainImage = data.images?.find((img) => img.is_main);
+
+        form.value = {
+            name: data.name,
+            price: data.price,
+            description: data.description,
+            image: mainImage ? `${API_URL}/storage/${mainImage.path}` : "",
+        };
 
         console.log("Fetched product:", form.value);
     } catch (err) {
@@ -123,7 +128,7 @@ const updateProduct = async () => {
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data", // Ensure correct content type
+                    "Content-Type": "multipart/form-data",
                 },
             }
         );
